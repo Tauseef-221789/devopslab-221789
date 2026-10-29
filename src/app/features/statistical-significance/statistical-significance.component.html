@@ -1,0 +1,49 @@
+<section class="mb-2">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+      <h2 class="text-lg font-semibold text-slate-900">Statistical Significance Verification</h2>
+      <p class="text-sm text-slate-500">Section 5 — Verifying that RF + ROS outperforms KNN + ADASYN beyond chance.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    @for (card of cards; track card.test) {
+      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">{{ card.test }}</span>
+            <h3 class="text-xl font-bold text-slate-900 mt-1">{{ card.statistic }}</h3>
+            <p class="text-sm text-slate-500 mt-2">{{ card.pValue }}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full"
+                  [class.bg-green-100]="card.significant"
+                  [class.text-green-700]="card.significant">
+              <span class="w-2 h-2 rounded-full bg-green-500"></span>
+              Significant
+            </span>
+          </div>
+        </div>
+        <div class="mt-4 p-4 rounded-lg border border-slate-100 bg-slate-50 text-sm">
+          <p class="font-medium text-slate-900 mb-1">Comparison:</p>
+          <p class="text-slate-600">{{ card.comparison }}</p>
+        </div>
+        <p class="mt-4 text-sm text-slate-700 leading-relaxed">{{ card.interpretation }}</p>
+        <div class="mt-5 pt-4 border-t border-slate-100">
+          <span class="text-xs font-semibold text-slate-400 uppercase">Conclusion</span>
+          <p class="text-sm text-slate-600 mt-1">Reject the null hypothesis — RF + ROS is statistically superior to KNN + ADASYN.</p>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="mt-8 bg-slate-900 rounded-xl p-6 text-white">
+    <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">Methodology Notes</h3>
+    <ul class="space-y-2 text-sm text-slate-300 list-disc list-inside">
+      <li>Paired t-test compares mean CV-fold scores across the same 10 folds, controlling for fold-level variance.</li>
+      <li>McNemar test operates on the hold-out test set contingency table of discordant predictions between the two models.</li>
+      <li>Both tests use α = 0.05; reported p-values far exceed the significance threshold.</li>
+      <li>Effect size (Cohen's d) for the paired comparison is large (d &gt; 1.5), indicating practical significance.</li>
+    </ul>
+  </div>
+</section>

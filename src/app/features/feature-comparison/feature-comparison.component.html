@@ -1,0 +1,104 @@
+<section class="mb-2">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div>
+      <h2 class="text-lg font-semibold text-slate-900">Target Leakage &amp; Feature Set Comparison</h2>
+      <p class="text-sm text-slate-500">Section 2 — Critical scientific finding: paper performance relies on post-arrival leakage features.</p>
+    </div>
+    <div class="flex gap-2 border border-slate-200 rounded-xl bg-slate-50 p-1 text-xs font-medium">
+      <button (click)="toggleSet('paper_style')"
+              [class.bg-orange-500]="activeSet === 'paper_style'"
+              [class.text-white]="activeSet === 'paper_style'"
+              [class.bg-white]="activeSet !== 'paper_style'"
+              [class.text-slate-900]="activeSet !== 'paper_style'"
+              [class.border-orange-500]="activeSet === 'paper_style'"
+              [class.border-transparent]="activeSet !== 'paper_style'"
+              class="px-4 py-1.5 rounded-lg transition-all shadow-sm"
+              role="tab" [attr.aria-selected]="activeSet === 'paper_style'">
+        Paper-Style (21)
+      </button>
+      <button (click)="toggleSet('pre_departure')"
+              [class.bg-orange-500]="activeSet === 'pre_departure'"
+              [class.text-white]="activeSet === 'pre_departure'"
+              [class.bg-white]="activeSet !== 'pre_departure'"
+              [class.text-slate-900]="activeSet !== 'pre_departure'"
+              [class.border-orange-500]="activeSet === 'pre_departure'"
+              [class.border-transparent]="activeSet !== 'pre_departure'"
+              class="px-4 py-1.5 rounded-lg transition-all shadow-sm"
+              role="tab" [attr.aria-selected]="activeSet === 'pre_departure'">
+        Pre-Departure (12)
+      </button>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-8 h-8 rounded-lg bg-orange-100 text-orange-700 flex items-center justify-center text-sm font-bold">⚠</div>
+      <div>
+        <span class="block text-sm font-semibold text-slate-900">{{ setLabel }}</span>
+        <span class="text-xs text-slate-500">{{ setDescription }}</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      @for (group of groups; track group.name) {
+        <div class="bg-slate-50 rounded-lg p-4 border border-slate-100"
+             [class.border-orange-200]="group.leaky"
+             [class.bg-orange-50]="group.leaky">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm font-semibold text-slate-900">{{ group.name }}</span>
+            <span class="text-xs font-bold px-2 py-0.5 rounded-full"
+                  [class.bg-orange-100]="group.leaky"
+                  [class.text-orange-700]="group.leaky"
+                  [class.bg-slate-100]="!group.leaky"
+                  [class.text-slate-700]="!group.leaky">
+              {{ group.count }} features
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mb-3">
+            {{ group.leaky ? 'Available only AFTER landing — these are target leakage.' : 'Known BEFORE departure — safe for forecasting.' }}
+          </p>
+          <div class="flex flex-wrap gap-1.5">
+            @for (feature of group.features; track feature) {
+              <span class="px-2 py-1 rounded text-xs border"
+                    [class.bg-orange-50]="group.leaky"
+                    [class.border-orange-200]="group.leaky"
+                    [class.text-orange-800]="group.leaky"
+                    [class.font-medium]="group.leaky"
+                    [class.bg-white]="!group.leaky"
+                    [class.border-slate-200]="!group.leaky"
+                    [class.text-slate-700]="!group.leaky">
+                {{ feature }}
+              </span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="mt-6 pt-6 border-t border-slate-200">
+      <h3 class="text-sm font-semibold text-slate-900 mb-3">Impact of Removing Leakage Columns</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+        <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+          <div class="text-xs font-semibold text-slate-500 uppercase">Paper-Style Accuracy</div>
+          <div class="text-2xl font-bold text-slate-900">~0.90</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+          <div class="text-xs font-semibold text-slate-500 uppercase">Pre-Departure Accuracy</div>
+          <div class="text-2xl font-bold text-orange-600">~0.62</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+          <div class="text-xs font-semibold text-slate-500 uppercase">Paper-Style MCC</div>
+          <div class="text-2xl font-bold text-slate-900">~0.74</div>
+        </div>
+        <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
+          <div class="text-xs font-semibold text-slate-500 uppercase">Pre-Departure MCC</div>
+          <div class="text-2xl font-bold text-orange-600">~0.19</div>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-slate-600 leading-relaxed">
+        Removing the 7 post-arrival leakage features causes a dramatic collapse in MCC (0.74 → ~0.19) and accuracy (0.90 → ~0.62),
+        proving that the paper's headline performance relies heavily on data unavailable before departure.
+      </p>
+    </div>
+  </div>
+</section>
