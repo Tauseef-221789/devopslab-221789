@@ -3,6 +3,9 @@
 This is an Angular (v17+) web application that reproduces and presents the methodology and results of the research paper:
 > **Flight delay prediction: Evaluating machine learning algorithms for enhanced accuracy** (AlBassam & AlShahrani, 2025, PLOS ONE)
 
+## Live site
+[Open the Flight Delay Prediction Benchmark Website](https://tauseef-221789.github.io/devopslab-221789/)
+
 ## Deployment to GitHub Pages
 1. In **Settings > Pages**, set the build and deployment source to **GitHub Actions**.
 2. Push to the `main` branch or run **Deploy to GitHub Pages** from the **Actions** tab.
